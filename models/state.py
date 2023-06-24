@@ -5,19 +5,29 @@ from models import storage
 import sqlalchemy
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-
+from os import environ
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship("City", back_populates="State",
-                          cascade="all delete delete-orphan")
-    @property
-    def cities(self):
-        """
-        Return the list of ``City`` instances with ``state_id`` equal to
-        the current ``State.id``
-        """
-        return [value for key, value in storage.all().items()\
-                if key.split(".")[0] == "City" and value.state_id == self.id]
+    if environ['HBNB_TYPE_STORAGE'] == 'db':
+        cities = relationship('City', cascade='all, delete', backref='state')
+    else:
+        @property
+        def cities(self):
+            """Getter method for cities
+            Return: list of cities with state_id equal to self.id
+            """
+            from models import storage
+            from models.city import City
+            # return list of City objs in __objects
+            cities_dict = storage.all(City)
+            cities_list = []
+
+            # copy values from dict to list
+            for city in cities_dict.values():
+                if city.state_id == self.id:
+                    cities_list.append(city)
+
+            return cities_list
