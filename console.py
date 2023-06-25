@@ -113,18 +113,54 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+
+    def do_create(self, line=''):
+        """
+        Create and save a new class instance
+        Usage: create <class name> [`<attribute_key>`="<attribute_value>" ...]
+        Ex:
+        (hbnb) create BaseModel
+        """
+        arg = line.split()
+        if len(arg) == 0:
             print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        else:
+            cls_name = arg[0]
+            if cls_name not in self.__class_list:
+                print("** class doesn't exist **")
+            else:
+                try:
+                    obj = eval(cls_name)()
+                    if arg[1:]:
+                        for param in arg[1:]:
+                            if '=' in param:
+                                key, value = param.split('=')
+                                key = key.strip()
+                                value = value.strip()
+                                # Handle string values
+                                if value.startswith('"') and\
+                                        value.endswith('"'):
+                                    value = value[1:-1].replace('\\"', '"')\
+                                            .replace('_', ' ')
+
+                                # Handle float values
+                                elif "." in value:
+                                    try:
+                                        value = float(value)
+                                    except ValueError:
+                                        continue  # Skip invalid value
+
+                                # Handle integer values
+                                else:
+                                    try:
+                                        value = int(value)
+                                    except ValueError:
+                                        continue
+                                setattr(obj, key, value)
+                    obj.save()
+                    print(obj.id)
+                except Exception as e:
+                    print(f"{e}")
 
     def help_create(self):
         """ Help information for the create method """
