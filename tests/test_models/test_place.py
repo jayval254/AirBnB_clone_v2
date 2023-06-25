@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 """ """
+from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
-import unittest
-import os
-from models.base_model import BaseModel
-import pep8
 
 
-class TestPlace(unittest.TestCase):
+class test_Place(test_basemodel):
     """ """
 
     def __init__(self, *args, **kwargs):
