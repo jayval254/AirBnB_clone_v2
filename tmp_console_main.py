@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Defines class 'HBNBCommand' """
 
-
 import cmd
 import models
 
@@ -33,7 +32,6 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line=''):
         """
         Quit program
-
         Usage: quit
         """
         return self.do_EOF()
@@ -41,9 +39,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line=''):
         """
         Create and save a new class instance
-
         Usage: create <class name> [`<attribute_key>`="<attribute_value>" ...]
-
         Ex:
         (hbnb) create BaseModel
         """
@@ -91,9 +87,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """
         Print a description of an instance based on the class name
-
         Usage: show <class name> <id>
-
         Ex:
         (hbnb) show BaseModel 1234-1234-1234
         """
@@ -118,9 +112,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line=''):
         """
         Delete an instance based on the class name and id
-
         Usage: destroy <class name> <id>
-
         Ex:
         (hbnb) destroy BaseModel 1234-1234-1234
         """
@@ -149,9 +141,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Print decriptions of all objects of all classes or a specific class
         if the second argument is supplied
-
         Usage: all [<class name>]
-
         Ex:
         (hbnb) all
         (hbnb) all BaseModel
@@ -175,9 +165,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line=''):
         """
         Update an object based on the class name and id
-
         Usage: update <class name> <id> <attribute name> "<attribute value>"
-
         Ex:
         (hbnb) update BaseModel 1234-1234-1234 email "airbnb@mail.com"
         """
